@@ -8,6 +8,7 @@ import umc.spring.domain.enums.MemberStatus;
 import umc.spring.domain.enums.SocialType;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -67,4 +68,24 @@ public class User extends BaseEntity {
 
     @Column(name = "inactive_date")
     private LocalDate inactiveDate;
+
+    // comment
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
+    // inquiry
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Inquiry> inquiries;
+
+    // alarm
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Alarm> alarms;
+
+    // food like
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FoodLike> foodLikes;
+
+    // mission
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserMission> missions;
 }

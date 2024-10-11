@@ -6,6 +6,7 @@ import umc.spring.domain.common.BaseEntity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,4 +36,18 @@ public class Market extends BaseEntity {
 
     @Column(name = "star")
     private Float star;
+
+    // location
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
+
+    // market image
+    @OneToMany(mappedBy = "market", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MarketImage> marketImages;
+
+    // comment
+    @OneToMany(mappedBy = "market", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
 }

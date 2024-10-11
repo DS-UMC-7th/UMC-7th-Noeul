@@ -5,6 +5,8 @@ import lombok.*;
 import umc.spring.domain.common.BaseEntity;
 import umc.spring.domain.enums.InquiryStatus;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -24,4 +26,17 @@ public class Inquiry extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private InquiryStatus status;
+
+    // user
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    // inquiry image
+    @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<InquiryImage> inquiryImages;
+
+    // inquiry reply
+    @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<InquiryReply> inquiryReplies;
 }

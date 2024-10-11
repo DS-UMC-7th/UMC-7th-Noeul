@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import umc.spring.domain.common.BaseEntity;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -22,4 +24,23 @@ public class Comment extends BaseEntity {
 
     @Column(name = "content") // 기본 255자
     private String content;
+
+    // market
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "market_id")
+    private Market market;
+
+    // user
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    // comment image
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentImage> commentImages;
+
+    // comment reply
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentReply> commentReplies;
+
 }

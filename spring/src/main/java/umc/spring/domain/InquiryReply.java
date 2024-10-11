@@ -15,4 +15,9 @@ public class InquiryReply {
 
     @Column(name = "content")
     private String content;
+
+    // inquiry
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inquiry_id")
+    private Inquiry inquiry;
 }

@@ -16,4 +16,9 @@ public class CommentImage extends BaseEntity {
 
     @Column(name = "image_url", length = 40)
     private String imageUrl;
+
+    // comment
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 }

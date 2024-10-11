@@ -15,4 +15,9 @@ public class InquiryImage {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    // inquiry
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inquiry_id")
+    private Inquiry inquiry;
 }

@@ -16,4 +16,9 @@ public class CommentReply extends BaseEntity {
 
     @Column(name = "content") // 255자
     private String content;
+
+    // comment
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 }

@@ -19,4 +19,9 @@ public class Alarm extends BaseEntity {
 
     @Column(name = "is_read")
     private Boolean isRead;
+
+    // inquiry
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }
