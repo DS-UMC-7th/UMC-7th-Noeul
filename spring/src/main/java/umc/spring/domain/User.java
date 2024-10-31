@@ -88,4 +88,15 @@ public class User extends BaseEntity {
     // mission
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserMission> missions;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", socialType=" + socialType +
+                ", username='" + username + '\'' +
+                ", birth=" + birth +
+                ", address='" + address + '\'' +
+                '}';
+    }
 }

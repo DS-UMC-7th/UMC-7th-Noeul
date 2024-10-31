@@ -43,4 +43,17 @@ public class Comment extends BaseEntity {
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentReply> commentReplies;
 
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", writer='" + writer + '\'' +
+                ", star=" + star +
+                ", content='" + content + '\'' +
+                ", market=" + market +
+                ", user=" + user +
+                ", commentImages=" + commentImages +
+                ", commentReplies=" + commentReplies +
+                '}';
+    }
 }

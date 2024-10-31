@@ -26,7 +26,22 @@ public class Mission extends BaseEntity {
     @Column(name = "point")
     private Integer point;
 
+    // market
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "market_id")
+    private Market market;
+
     // mission
     @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserMission> missions;
+
+    @Override
+    public String toString() {
+        return "Mission{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                ", endDate=" + endDate +
+                ", point=" + point +
+                '}';
+    }
 }

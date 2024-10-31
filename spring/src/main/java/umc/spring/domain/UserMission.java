@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import umc.spring.domain.common.BaseEntity;
 import umc.spring.domain.enums.MemberStatus;
+import umc.spring.domain.enums.MissionStatus;
 
 @Entity
 @Getter
@@ -17,7 +18,7 @@ public class UserMission extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private MemberStatus status;
+    private MissionStatus status;
 
     // user
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,4 +29,5 @@ public class UserMission extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private Mission mission;
+
 }

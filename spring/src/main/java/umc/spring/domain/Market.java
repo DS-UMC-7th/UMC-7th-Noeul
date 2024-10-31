@@ -42,6 +42,10 @@ public class Market extends BaseEntity {
     @JoinColumn(name = "location_id")
     private Location location;
 
+    // misssions
+    @OneToMany(mappedBy = "market", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Mission> missions;
+
     // market image
     @OneToMany(mappedBy = "market", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MarketImage> marketImages;
