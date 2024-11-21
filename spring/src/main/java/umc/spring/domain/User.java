@@ -2,6 +2,9 @@ package umc.spring.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import umc.spring.domain.common.BaseEntity;
 import umc.spring.domain.enums.Gender;
 import umc.spring.domain.enums.MemberStatus;
@@ -15,6 +18,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@DynamicUpdate // status default 설정 반영함
+@DynamicInsert //  insert와 update 시 null 인 경우는 그냥 쿼리를 보내지 않도록 해줌
 public class User extends BaseEntity {
 
     @Id
@@ -43,6 +48,7 @@ public class User extends BaseEntity {
     @Column(name = "email")
     private String email;
 
+    @ColumnDefault("0") // 디폴트 0
     @Column(name = "point", columnDefinition = "BIGINT DEFAULT 0")
     private Long point = 0L; // 초기값 0
 
@@ -63,7 +69,7 @@ public class User extends BaseEntity {
     private String inQuriyAnswerAlarm;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "status", columnDefinition = "VARCHAR(15) DEFAULT 'ACTIVE'")
     private MemberStatus status;
 
     @Column(name = "inactive_date")

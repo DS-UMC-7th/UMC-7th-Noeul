@@ -1,11 +1,17 @@
 package umc.spring.service.CommentService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import umc.spring.apiPayload.code.status.ErrorStatus;
+import umc.spring.apiPayload.exception.handler.MarketNotFoundHandler;
+import umc.spring.apiPayload.exception.handler.UserNotFoundException;
+import umc.spring.converter.CommentConverter.CommentConverter;
 import umc.spring.domain.Comment;
 import umc.spring.domain.Market;
 import umc.spring.domain.User;
+import umc.spring.dto.comment.CommentRequestDTO;
 import umc.spring.repository.CommentRepository.CommentRepository;
 import umc.spring.repository.MarketRepository.MarketRepository;
 import umc.spring.repository.UserRepository.UserRepository;
@@ -34,5 +40,21 @@ public class CommentQueryServiceImpl implements CommentService{
 
         return commentRepository.save(createComment);
 
+    }
+
+    @Override
+    public Comment createComment_2(CommentRequestDTO.@Valid createDTO request) {
+        Comment comment = CommentConverter.toComment(request);
+
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(ErrorStatus.USER_NOT_FOUND));
+
+        Market market = marketRepository.findById(request.getMarketId())
+                .orElseThrow(() -> new MarketNotFoundHandler(ErrorStatus.MARKET_NOT_FOUND));
+
+        comment.setUser(user);
+        comment.setMarket(market);
+        comment.setWriter(user.getUsername());
+        return commentRepository.save(comment);
     }
 }

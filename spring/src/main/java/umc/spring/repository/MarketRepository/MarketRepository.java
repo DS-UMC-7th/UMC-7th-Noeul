@@ -6,4 +6,6 @@ import umc.spring.domain.Market;
 
 @Repository
 public interface MarketRepository extends JpaRepository<Market, Long> {
+    boolean existsById(Long id);
+
 }

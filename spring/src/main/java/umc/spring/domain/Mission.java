@@ -27,6 +27,7 @@ public class Mission extends BaseEntity {
     private Integer point;
 
     // market
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "market_id")
     private Market market;

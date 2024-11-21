@@ -1,12 +1,20 @@
 package umc.spring.service.MissionService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import umc.spring.apiPayload.code.status.ErrorStatus;
+import umc.spring.apiPayload.exception.handler.MarketNotFoundHandler;
+import umc.spring.apiPayload.exception.handler.UserNotFoundException;
+import umc.spring.converter.MissionConverter.MissionConverter;
 import umc.spring.domain.Location;
+import umc.spring.domain.Market;
 import umc.spring.domain.enums.MemberStatus;
 import umc.spring.domain.enums.MissionStatus;
+import umc.spring.dto.mission.MissionRequestDTO;
 import umc.spring.repository.LocationRepository.LocationRepository;
+import umc.spring.repository.MarketRepository.MarketRepository;
 import umc.spring.repository.MissionRepository.MissionRepository;
 import umc.spring.repository.UserRepository.UserRepository;
 import umc.spring.domain.Mission;
@@ -24,6 +32,7 @@ public class MissionQueryServiceImpl implements MissionService{
     private final MissionRepository missionRepository;
     private final UserRepository userRepository;
     private final LocationRepository locationRepository;
+    private final MarketRepository marketRepository;
 
     @Override
     public Optional<Mission> findMission(Long id) {
@@ -51,5 +60,17 @@ public class MissionQueryServiceImpl implements MissionService{
                 .orElseThrow(() -> new NoSuchElementException("location을 찾을 수 없습니다."));
 
         return missionRepository.findPossibleMission(user, location, offset, limit);
+    }
+
+    @Override
+    public Mission createMission(MissionRequestDTO.@Valid createDTO request) {
+        Market market = marketRepository.findById(request.getMarketId())
+                .orElseThrow(() -> new MarketNotFoundHandler(ErrorStatus.MARKET_NOT_FOUND));
+
+        Mission mission = MissionConverter.toMission(request);
+
+        mission.setMarket(market);
+
+        return missionRepository.save(mission);
     }
 }

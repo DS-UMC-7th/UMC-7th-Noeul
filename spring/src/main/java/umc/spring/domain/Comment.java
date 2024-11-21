@@ -16,6 +16,7 @@ public class Comment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     @Column(name = "writer", length = 20)
     private String writer;
 
@@ -26,11 +27,13 @@ public class Comment extends BaseEntity {
     private String content;
 
     // market
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "market_id")
     private Market market;
 
     // user
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

@@ -2,6 +2,7 @@ package umc.spring.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import umc.spring.domain.common.BaseEntity;
 
 import java.time.LocalDate;
@@ -35,9 +36,11 @@ public class Market extends BaseEntity {
     private String address;
 
     @Column(name = "star")
+    @ColumnDefault("5.0")
     private Float star;
 
     // location
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
