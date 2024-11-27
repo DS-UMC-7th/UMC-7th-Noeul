@@ -2,6 +2,8 @@ package umc.spring.service.CommentService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umc.spring.apiPayload.code.status.ErrorStatus;
@@ -56,5 +58,16 @@ public class CommentQueryServiceImpl implements CommentService{
         comment.setMarket(market);
         comment.setWriter(user.getUsername());
         return commentRepository.save(comment);
+    }
+
+    @Override
+    public Page<Comment> getMyCommentList(Long userId, int page) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(ErrorStatus.USER_NOT_FOUND));
+
+        // 프론트가 1 이상으로 주므로
+        Page<Comment> commentPage = commentRepository.findAllByUser(user, PageRequest.of(page - 1, 10));
+
+        return commentPage;
     }
 }

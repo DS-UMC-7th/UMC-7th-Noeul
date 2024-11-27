@@ -1,6 +1,7 @@
 package umc.spring.service.MissionService;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import umc.spring.domain.Market;
 import umc.spring.domain.Mission;
 import umc.spring.domain.enums.MemberStatus;
@@ -16,4 +17,6 @@ public interface MissionService {
     List<Mission> findMissionByLocation(String username, Long locationId, int offset, int limit);
 
     public Mission createMission(MissionRequestDTO.@Valid createDTO request);
+
+    Page<Mission> getMarketMission(Long userId, int page);
 }

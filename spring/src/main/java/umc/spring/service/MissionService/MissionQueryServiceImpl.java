@@ -2,6 +2,8 @@ package umc.spring.service.MissionService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umc.spring.apiPayload.code.status.ErrorStatus;
@@ -16,6 +18,7 @@ import umc.spring.dto.mission.MissionRequestDTO;
 import umc.spring.repository.LocationRepository.LocationRepository;
 import umc.spring.repository.MarketRepository.MarketRepository;
 import umc.spring.repository.MissionRepository.MissionRepository;
+import umc.spring.repository.UserMissionRepository.UserMissionRepository;
 import umc.spring.repository.UserRepository.UserRepository;
 import umc.spring.domain.Mission;
 import umc.spring.domain.User;
@@ -33,6 +36,7 @@ public class MissionQueryServiceImpl implements MissionService{
     private final UserRepository userRepository;
     private final LocationRepository locationRepository;
     private final MarketRepository marketRepository;
+    private final UserMissionRepository userMissionRepository;
 
     @Override
     public Optional<Mission> findMission(Long id) {
@@ -72,5 +76,16 @@ public class MissionQueryServiceImpl implements MissionService{
         mission.setMarket(market);
 
         return missionRepository.save(mission);
+    }
+
+    @Override
+    public Page<Mission> getMarketMission(Long userId, int page) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(ErrorStatus.USER_NOT_FOUND));
+
+        // 프론트가 1 이상으로 주므로
+        Page<Mission> missionPage = userMissionRepository.findAllInProgressMissionsByUser(user, PageRequest.of(page - 1, 10));
+
+        return missionPage;
     }
 }
